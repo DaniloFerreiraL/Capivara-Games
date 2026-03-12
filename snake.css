@@ -1,0 +1,45 @@
+/* estilos para os botões, container e canvas do Snake */
+.game-btn{
+    display:inline-block;
+    padding:12px 28px;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(180deg,#2ecc71,#218838);
+    border:0;
+    border-radius:8px;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,0.16);
+    margin:0 10px;
+    transition:transform .08s, box-shadow .08s, opacity .12s;
+}
+.game-btn:hover{ transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.22); }
+.game-btn:active{ transform:translateY(0); box-shadow:0 4px 12px rgba(0,0,0,0.14); }
+.game-btn:disabled{ opacity:.6; cursor:default; }
+
+/* container dos botões */
+.start-container{ text-align:center; margin:28px; }
+
+/* canvases começam escondidos até clicar */
+#canvas, #board{ display:none; background:#b1e2eb; border:4px solid #000; border-radius:6px; margin:0 auto 20px; box-shadow:0 6px 20px rgba(0,0,0,0.25); }
+
+/* título */
+h1{ text-align:right; margin-right:10px; }
+
+/* Pacman button style (use junto com .game-btn) */
+.game-btn.pacman-btn{
+    background: radial-gradient(circle at 30% 35%, #fff176 0%, #ffd54f 20%, #ffeb3b 60%, #fbc02d 100%);
+    color: #111;
+    border: 3px solid #111;
+    padding: 12px 28px;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    transition: transform .08s ease, box-shadow .08s ease, opacity .12s ease;
+    margin-left: 10px;
+}
+.game-btn.pacman-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
+.game-btn.pacman-btn:active { transform: translateY(0); box-shadow: 0 6px 14px rgba(0,0,0,0.16); }
+.game-btn.pacman-btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }

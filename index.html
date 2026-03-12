@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capivara Games</title>
+
+  <link rel="stylesheet" href="snake.css">
+  <link rel="stylesheet" href="flappy.css">
+  <link rel="stylesheet" href="dino.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    :root {
+      --bg: #0f1724;
+      --sidebar-bg: linear-gradient(180deg, #1e293b, #353538);
+      --btn-bg: #2f2f31;
+      --btn-hover: #2563eb;
+      --text-color: #ffffff;
+      --accent: #38bdf8;
+    }
+
+    body.claro {
+      --bg: #dfefff;
+      --sidebar-bg: linear-gradient(180deg, #9cc9ff, #a7e5ff);
+      --btn-bg: #ffffff;
+      --btn-hover: #6cb4ff;
+      --text-color: #0f1724;
+      --accent: #007fff;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      background-color: var(--bg);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .sidebar h1 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: var(--accent);
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    .game-btn {
+      width: 90%;
+      padding: 12px 10px;
+      margin: 8px 0;
+      background: var(--btn-bg);
+      border: none;
+      border-radius: 12px;
+      color: var(--text-color);
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .game-btn:hover {
+      background: var(--btn-hover);
+      transform: translateX(6px);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .game-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .main-content {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(120deg, #0f2a2804, #60606113);
+      transition: background 0.3s ease;
+    }
+
+    #canvas, #board, #pacman, #dino {
+      display: none;
+      margin: auto;
+    }
+
+    #pacman {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      visibility: hidden;
+      pointer-events: none;
+      border: 3px solid var(--accent);
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+
+    .tema-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: var(--btn-bg);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .tema-btn:hover {
+      background: var(--accent);
+      transform: rotate(20deg);
+    }
+
+    .tema-btn img {
+      width: 26px;
+      height: auto;
+      transition: filter 0.3s ease;
+    }
+
+    
+    .img-canto{
+      position: fixed;
+      bottom: 0;
+      left: 261px;
+      width: 50px;
+      height: auto;
+      z-index: 1000;
+      opacity:0.65;
+    }
+  </style>
+</head>
+
+<body>
+  <img src="/flappyvara.png" class="img-canto">
+  <!-- Botão para mudar o tema -->
+  <button class="tema-btn" id="temaBtn">
+    <img src="botaotema.png" alt="Mudar tema">
+  </button>
+
+  <!-- Menu lateral -->
+  <div class="sidebar">
+    <h1>🎮 Capivara Games</h1>
+    <button id="startSnakeBtn" class="game-btn">🐍 CapiSnake Game</button>
+    <button id="startFlappyBtn" class="game-btn">🐦 Flappy Capybara</button>
+    <button id="startPacmanBtn" class="game-btn">🟡 CapiMan</button>
+    <button id="startDinoBtn" class="game-btn">🦖 DinoCapi Game</button>
+  </div>
+
+  <!-- Área principal -->
+  <div class="main-content">
+    <canvas id="canvas" tabindex="0" width="600" height="600"></canvas>
+    <canvas id="dino" tabindex="0" width="700" height="440"></canvas>
+    <canvas id="board" tabindex="0" width="360" height="640"></canvas>
+    <iframe id="pacman" src="" width="600" height="600" frameborder="0"></iframe>
+  </div>
+
+  <!-- Scripts dos jogos -->
+  <script src="snake.js"></script>
+  <script src="flappy.js"></script>
+  <script src="dino.js"></script>
+
+  <script>
+    const temaBtn = document.getElementById('temaBtn');
+    let modoClaro = false;
+
+    temaBtn.addEventListener('click', () => {
+      modoClaro = !modoClaro;
+      document.body.classList.toggle('claro', modoClaro);
+    });
+
+    const snakeCanvas = document.getElementById('canvas');
+    const flappyCanvas = document.getElementById('board');
+    const dinoCanvas = document.getElementById('dino');
+    const pacmanFrame = document.getElementById('pacman');
+    const snakeBtn = document.getElementById('startSnakeBtn');
+    const flappyBtn = document.getElementById('startFlappyBtn');
+    const dinoBtn = document.getElementById('startDinoBtn');
+
+    function esconderTodos() {
+      if (window.stopFlappy) window.stopFlappy();
+      if (window.stopSnake) window.stopSnake();
+      if (window.stopDino) window.stopDino();
+
+      snakeCanvas.style.display = 'none';
+      flappyCanvas.style.display = 'none';
+      dinoCanvas.style.display = 'none';
+      pacmanFrame.style.display = 'none';
+      pacmanFrame.style.visibility = 'hidden';
+      pacmanFrame.style.pointerEvents = 'none';
+      pacmanFrame.src = 'about:blank';
+
+      snakeBtn.disabled = false;
+      flappyBtn.disabled = false;
+      dinoBtn.disabled = false;
+    }
+
+    snakeBtn.addEventListener('click', () => {
+      esconderTodos();
+      snakeCanvas.style.display = 'block';
+      if (typeof window.startGame === 'function') window.startGame();
+    });
+
+    flappyBtn.addEventListener('click', () => {
+      esconderTodos();
+      flappyCanvas.style.display = 'block';
+      if (typeof window.startFlappy === 'function') window.startFlappy();
+    });
+
+    document.getElementById('startPacmanBtn').addEventListener('click', () => {
+      esconderTodos();
+      pacmanFrame.src = 'pacman.html';
+      pacmanFrame.style.display = 'block';
+      pacmanFrame.style.visibility = 'visible';
+      pacmanFrame.style.pointerEvents = 'auto';
+    });
+
+    dinoBtn.addEventListener('click', () => {
+      esconderTodos();
+      dinoCanvas.style.display = 'block';
+      if (typeof window.startDino === 'function') window.startDino();
+    });
+  </script>
+</body>
+</html>
